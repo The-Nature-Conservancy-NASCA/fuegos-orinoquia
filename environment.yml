@@ -1,0 +1,15 @@
+name: fuegos-orinoquia
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - gdal
+  - geopandas
+  - netcdf4
+  - numpy
+  - pandas
+  - rasterio
+  - requests
+  - rioxarray
+  - shapely
+  - xarray
