@@ -1,9 +1,8 @@
-# ------------------------------------------------------------------------------
-# Date:     September 2020
-# Author:   Marcelo Villa-Piñeros
+# ---------------------------------------------------------------------------------------
+# Author: Marcelo Villa-Piñeros
 #
-# Purpose:  Contains constants used by several scripts in the project.
-# ------------------------------------------------------------------------------
+# Purpose: Contains constants used by several scripts in the project.
+# ---------------------------------------------------------------------------------------
 import os
 
 # Earthdata's username and password. Either create the respective environment
