@@ -1,0 +1,75 @@
+{
+  "task_type": "area",
+  "task_name": "MCD64A1_COL",
+  "params": {
+    "dates": [
+      {
+        "startDate": "01-01-2001",
+        "endDate": "12-31-2019"
+      }
+    ],
+    "layers": [
+      {
+        "product": "MCD64A1.006",
+        "layer": "Burn_Date"
+      },
+      {
+        "product": "MCD64A1.006",
+        "layer": "Burn_Date_Uncertainty"
+      },
+      {
+        "product": "MCD64A1.006",
+        "layer": "First_Day"
+      },
+      {
+        "product": "MCD64A1.006",
+        "layer": "Last_Day"
+      },
+      {
+        "product": "MCD64A1.006",
+        "layer": "QA"
+      }
+    ],
+    "geo": {
+      "type": "FeatureCollection",
+      "features": [
+        {
+          "type": "Feature",
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  -78.9909352282,
+                  -4.29818694419
+                ],
+                [
+                  -66.8763258531,
+                  -4.29818694419
+                ],
+                [
+                  -66.8763258531,
+                  12.4373031682
+                ],
+                [
+                  -78.9909352282,
+                  12.4373031682
+                ],
+                [
+                  -78.9909352282,
+                  -4.29818694419
+                ]
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    "output": {
+      "format": {
+        "type": "netcdf4"
+      },
+      "projection": "geographic"
+    }
+  }
+}
