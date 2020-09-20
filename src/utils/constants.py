@@ -13,4 +13,11 @@ EARTHDATA_PASSWORD = os.environ.get("EARTHDATA_PASSWORD")
 # Dictionary with paths to save the files of an AppEEARS task. The number of elements
 # in the dictionary has to be the same of tasks that are going to be submitted and
 # each key should correspond to a task name.
-SAVE_PATHS = {"MCD64A1_COL": "data/nc/MODIS/MCD64A1"}
+SAVE_PATHS = {"MCD64A1": "data/nc/MODIS/MCD64A1"}
+
+WINDOW_FILEPATHS = {
+    "MANACACIAS": "data/shp/aoi/manacacias.shp",
+    "BUFFER": "data/shp/aoi/manacacias_buffer.shp",
+    "IDEAM": "data/shp/aoi/orinoquia_ideam.shp",
+    "NCS": "data/shp/aoi/orinoquia_ncs.shp"
+}
