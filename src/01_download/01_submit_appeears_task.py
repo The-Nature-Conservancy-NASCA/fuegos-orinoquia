@@ -1,14 +1,14 @@
-# ---------------------------------------------------------------------------------------
-# Author: Marcelo Villa- Piñeros
+# -----------------------------------------------------------------------
+# Author: Marcelo Villa-Piñeros
 #
 # Purpose: Submits a set of defined tasks using the AppEEARS API.
 #
-# Notes: In order to submit a task using the AppEEARS API you need to have an
-# Earthdata account. If you need to register, go to:
+# Notes: In order to submit a task using the AppEEARS API you need to
+# have an Earthdata account. If you need to register, go to:
 # https://urs.earthdata.nasa.gov/users/new
 # For more information about the AppEEARS API go to:
 # https://lpdaacsvc.cr.usgs.gov/appeears/api/
-# ---------------------------------------------------------------------------------------
+# -----------------------------------------------------------------------
 import datetime
 import glob
 import json
@@ -25,7 +25,7 @@ def submit_task(task: dict, username: str, password: str) -> str:
 
     Parameters
     ----------
-    task:      dictionary following the AppEEARS API task object convention
+    task:      dictionary following the AppEEARS API task object format
     username:  Earthdata username
     password:  Earthdata password
 
@@ -35,8 +35,8 @@ def submit_task(task: dict, username: str, password: str) -> str:
 
     Notes
     -----
-    For more information about the task object convention and all the properties
-    that can be specified, check the documentation:
+    For more information about the task object convention and all the
+    properties that can be specified, check the documentation:
     https://lpdaacsvc.cr.usgs.gov/appeears/api/#task-object
     """
     api_url = "https://lpdaacsvc.cr.usgs.gov/appeears/api"
@@ -74,9 +74,9 @@ def write_task_info(path: str, task_id: str, task_name: str) -> None:
 
     Notes
     -----
-    The purpose of persisting the task information into a file is to be able to
-    retrieve the task id afterwards in order to check if the task is ready and
-    download the requested files.
+    The purpose of persisting the task information into a file is to be
+    able to retrieve the task id afterwards in order to check if the task
+    is ready and download the requested files.
     """
     with open(f"{path}/{task_id}.json", "w") as file:
         info = {
