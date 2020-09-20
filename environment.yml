@@ -8,6 +8,7 @@ dependencies:
   - matplotlib
   - netcdf4
   - numpy
+  - openpyxl
   - pandas
   - rasterio
   - requests
