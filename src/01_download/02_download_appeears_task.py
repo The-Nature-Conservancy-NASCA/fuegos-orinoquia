@@ -1,15 +1,17 @@
-# ---------------------------------------------------------------------------------------
+# -----------------------------------------------------------------------
 # Author: Marcelo Villa-Piñeros
 #
-# Purpose: Downloads data files from previously submitted tasks using the AppEEARS API.
+# Purpose: Downloads data files from previously submitted tasks using the
+# AppEEARS API.
 #
-# Notes: If a task is not ready, the program will create a warning and go to the next
-# task. On the other hand, if a task is successfully downloaded, the 'downloaded' flag
-# on the associated JSON file (created when executing 01_submit_appeears_task.py) will
-# be changed to True. This guarantees that if this script is executed again (for those
-# cases where one or more tasks were not ready at execution time), there will be no
-# attempts to re-download tasks.
-# ---------------------------------------------------------------------------------------
+# Notes: If a task is not ready, the program will create a warning and go
+# to the next task. On the other hand, if a task is successfully
+# downloaded, the 'downloaded' flag on the associated JSON file (created
+# when executing 01_submit_appeears_task.py) will be changed to True.
+# This guarantees that if this script is executed again (for those cases
+# where one or more tasks were not ready at execution time), there will
+# be no attempts to re-download tasks.
+# -----------------------------------------------------------------------
 import glob
 import json
 import os
@@ -25,7 +27,9 @@ class TaskNotReadyException(Exception):
     pass
 
 
-def download_task(task_id: str, username: str, password: str, save_to: str) -> None:
+def download_task(
+    task_id: str, username: str, password: str, save_to: str, skip_files: bool = False
+) -> None:
     """
     Downloads the files of a specific AppEEARS task.
     Parameters
@@ -34,6 +38,7 @@ def download_task(task_id: str, username: str, password: str, save_to: str) -> N
     username:    Earthdata username
     password:    Earthdata password
     save_to:     folder to save the products to
+    skip_files:  whether to skip non-data files
     Returns
     -------
     None
@@ -58,6 +63,8 @@ def download_task(task_id: str, username: str, password: str, save_to: str) -> N
         r = requests.get(f"{api_url}/bundle/{task_id}")
         r.raise_for_status()
         bundle = r.json()
+        if skip_files:
+            bundle["files"] = filter(lambda x: x["file_type"] == "nc", bundle["files"])
         fids = [file["file_id"] for file in bundle["files"]]
 
         if not os.path.exists(save_to):
@@ -88,7 +95,13 @@ if __name__ == "__main__":
                 continue
             save_to = SAVE_PATHS[info["task_name"]]
         try:
-            download_task(task_id, EARTHDATA_USERNAME, EARTHDATA_PASSWORD, save_to)
+            download_task(
+                task_id,
+                EARTHDATA_USERNAME,
+                EARTHDATA_PASSWORD,
+                save_to,
+                skip_files=True,
+            )
             info["downloaded"] = True
             with open(fn, "w") as file:
                 json.dump(info, file, indent=2)
