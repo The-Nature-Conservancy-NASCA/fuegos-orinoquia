@@ -12,6 +12,10 @@
       {
         "product": "MCD64A1.006",
         "layer": "Burn_Date"
+      },
+      {
+        "product": "MCD64A1.006",
+        "layer": "QA"
       }
     ],
     "geo": {
