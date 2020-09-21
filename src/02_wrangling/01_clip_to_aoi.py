@@ -10,7 +10,7 @@ import rioxarray
 import xarray as xr
 from shapely.geometry import mapping
 
-from src.utils.constants import WINDOW_FILEPATHS
+from src.utils.constants import WINDOWS
 
 if __name__ == "__main__":
 
@@ -31,9 +31,9 @@ if __name__ == "__main__":
 
     # Clip the original NetCDF4 data for each specified window and save
     # to a new (smaller) NetCDF4 file.
-    for window_name, window_filepath in WINDOW_FILEPATHS.items():
-        mask = geopandas.read_file(window_filepath)
+    for window in WINDOWS:
+        mask = geopandas.read_file(window["path"])
         geometry = mask.geometry.apply(mapping)
         window_ds = ds.rio.clip(geometry)
-        save_to = os.path.join(output_folder, f"MCD64A1_500m_{window_name}.nc")
+        save_to = os.path.join(output_folder, f"MCD64A1_500m_{window['name']}.nc")
         window_ds.to_netcdf(save_to)

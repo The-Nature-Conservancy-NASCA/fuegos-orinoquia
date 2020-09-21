@@ -15,9 +15,14 @@ EARTHDATA_PASSWORD = os.environ.get("EARTHDATA_PASSWORD")
 # each key should correspond to a task name.
 SAVE_PATHS = {"MCD64A1": "data/nc/MODIS/MCD64A1"}
 
-WINDOW_FILEPATHS = {
-    "MANACACIAS": "data/shp/aoi/manacacias.shp",
-    "BUFFER": "data/shp/aoi/manacacias_buffer.shp",
-    "IDEAM": "data/shp/aoi/orinoquia_ideam.shp",
-    "NCS": "data/shp/aoi/orinoquia_ncs.shp"
-}
+WINDOWS = [
+    {"name": "manacacias", "path": "data/shp/aoi/manacacias.shp"},
+    {"name": "buffer", "path": "data/shp/aoi/manacacias_buffer.shp"},
+    {"name": "ideam", "path": "data/shp/aoi/orinoquia_ideam.shp"},
+    {"name": "ncs", "path": "data/shp/aoi/orinoquia_ncs.shp"}
+]
+
+# Factor to multiply number of pixels with and compute an area measure. Each pixel is
+# 500 x 500 meters and it can be then divided by another constant to obtain hectares,
+# square kilometers or any other unit.
+AREA_FACTOR = (500 * 500) / 10000
