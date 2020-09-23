@@ -55,7 +55,7 @@ if __name__ == "__main__":
             end = window_ds.time.dt.year.values.max()
             date_range = pd.date_range(str(start), str(end + 1), freq="D", closed="left")
             daily_series = pd.Series(None, index=date_range, dtype=np.float)
-            daily_series.index.name = "day"
+            daily_series.index.name = "time"
             daily_series.name = "area"
 
             for year in window_ds.groupby("time.year").groups.keys():
@@ -76,14 +76,17 @@ if __name__ == "__main__":
             # Compute total burned area for each year in the date
             # range.
             year_groups = monthly_series.groupby(monthly_series.index.year).sum()
+            year_groups.index.name = "year"
             year_groups.to_excel(writer, sheet_name="Year")
 
             # Compute total burned area for each month from january to
             # december.
             month_groups = monthly_series.groupby(monthly_series.index.month).sum()
+            month_groups.index.name = "month"
             month_groups.to_excel(writer, sheet_name="Month")
 
             # Compute total burned area for each day of the year (e.g.
             # 1 - 366; including leap years)
             day_groups = daily_series.groupby(daily_series.index.dayofyear).sum()
+            day_groups.index.name = "day"
             day_groups.to_excel(writer, sheet_name="Day")
