@@ -26,3 +26,5 @@ WINDOWS = [
 # 500 x 500 meters and it can be then divided by another constant to obtain hectares,
 # square kilometers or any other unit.
 AREA_FACTOR = (500 * 500) / 10000
+
+NODATA_VALUE = -9999
