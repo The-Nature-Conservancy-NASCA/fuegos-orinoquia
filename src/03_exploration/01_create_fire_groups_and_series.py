@@ -22,12 +22,12 @@ if __name__ == "__main__":
 
     for window in WINDOWS:
 
-        output_folder = f"results/csv/{window['name']}"
+        output_folder = f"results/xlsx/{window['name']}"
         if not os.path.exists(output_folder):
             os.makedirs(output_folder)
 
         window_ds = xr.open_dataset(
-            f"data/nc/MODIS/MCD64A1_ORN/MCD64A1_500m_{window['name']}.nc",
+            f"data/nc/MODIS/MCD64A1/MCD64A1_500m_{window['name']}.nc",
             mask_and_scale=False,
         )
 
@@ -53,7 +53,9 @@ if __name__ == "__main__":
             # of pixels that burned for each day on a given year.
             start = window_ds.time.dt.year.values.min()
             end = window_ds.time.dt.year.values.max()
-            date_range = pd.date_range(str(start), str(end + 1), freq="D", closed="left")
+            date_range = pd.date_range(
+                str(start), str(end + 1), freq="D", closed="left"
+            )
             daily_series = pd.Series(None, index=date_range, dtype=np.float)
             daily_series.index.name = "time"
             daily_series.name = "area"

@@ -15,6 +15,7 @@ from osgeo import gdalconst
 from src.utils.constants import WINDOWS, NODATA_VALUE
 from src.utils.functions import array_to_geotiff
 
+
 if __name__ == "__main__":
 
     # Project's root
@@ -27,7 +28,7 @@ if __name__ == "__main__":
     for window in WINDOWS:
 
         window_ds = xr.open_dataset(
-            f"data/nc/MODIS/MCD64A1_ORN/MCD64A1_500m_{window['name']}.nc",
+            f"data/nc/MODIS/MCD64A1/MCD64A1_500m_{window['name']}.nc",
             mask_and_scale=False,
         )
 

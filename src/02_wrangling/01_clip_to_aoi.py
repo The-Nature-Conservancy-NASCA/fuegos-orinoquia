@@ -12,15 +12,16 @@ from shapely.geometry import mapping
 
 from src.utils.constants import WINDOWS
 
+
 if __name__ == "__main__":
 
     # Project's root
     os.chdir("../..")
 
-    output_folder = "data/nc/MODIS/MCD64A1_ORN"
+    output_folder = "data/nc/MODIS/MCD64A1"
 
     ds = xr.open_dataset(
-        "data/nc/MODIS/MCD64A1_ORN/MCD64A1.006_500m_aid0001.nc", mask_and_scale=False
+        "data/nc/MODIS/MCD64A1/MCD64A1.006_500m_aid0001.nc", mask_and_scale=False
     )
 
     # Although the original NetCDF4 data has already spatial dimensions
@@ -30,7 +31,7 @@ if __name__ == "__main__":
     ds = ds.rio.write_crs("epsg:4326")
 
     # Clip the original NetCDF4 data for each specified window and save
-    # to a new (smaller) NetCDF4 file.
+    # to a new NetCDF4 file.
     for window in WINDOWS:
         mask = geopandas.read_file(window["path"])
         geometry = mask.geometry.apply(mapping)
