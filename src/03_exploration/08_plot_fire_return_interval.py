@@ -1,11 +1,12 @@
 # -----------------------------------------------------------------------
 # Author: Marcelo Villa-Piñeros
 #
-# Purpose: Plots the fire return interval for each window.
+# Purpose: Plots the fire return interval distribution for each window.
 # -----------------------------------------------------------------------
 import os
 
 import matplotlib.pyplot as plt
+import numpy as np
 import seaborn as sns
 from osgeo import gdal
 
@@ -26,10 +27,8 @@ if __name__ == "__main__":
         arr = ds.ReadAsArray()
         fri = arr[arr != NODATA_VALUE]
 
-        fig, ax = plt.subplots(ncols=1, nrows=2, sharex=True)
-        sns.boxplot(x=fri, ax=ax[0])
-        sns.kdeplot(x=fri, ax=ax[1])
-        sns.histplot(x=fri, stat="probability", ax=ax[1])
+        fig = sns.displot(x=fri, kde=True, rug=True)
+        plt.axvline(np.median(fri))
 
         save_to = os.path.join(output_folder, "return_interval_distribution.png")
         fig.savefig(save_to)
