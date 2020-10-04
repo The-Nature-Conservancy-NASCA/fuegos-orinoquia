@@ -26,13 +26,13 @@ def array_to_geotiff(
 
     Parameters
     ----------
-    arr:      2D or 3D array
-    fn:       output GeoTIFF's file name
-    sr:       output GeoTIFF's spatial reference in a WKT string
-    gt:       output GeoTIFF's geotransform
-    gdtype:   GDAL data type
-    nd_val:   output GeoTIFF's NoData value
-    options:  GDAL creation options
+    arr:      2D or 3D array.
+    fn:       output GeoTIFF's file name.
+    sr:       output GeoTIFF's spatial reference in a WKT string.
+    gt:       output GeoTIFF's geotransform.
+    gdtype:   GDAL data type.
+    nd_val:   output GeoTIFF's NoData value.
+    options:  GDAL creation options.
 
     Returns
     -------
@@ -67,12 +67,24 @@ def array_to_geotiff(
 
 def download_http_file(url: str, save_to: str = None) -> str:
     """
+    Downloads a file using the HTTP(S) protocol.
+
     Parameters
     ----------
-    url
-    save_to
+    url:     HTTP(S) URL with the downloadable file.
+    save_to: optional path to folder (e.g. /home/foo) or file
+             (e.g. /home/foo/bar.txt). If a path to a folder is passed,
+             the file is saved to that folder using the original filename
+             from the headers of the file or from the URL. If a path to
+             a file is passed, the file will be saved to that path using
+             the given filename, ignoring the original filename. If nothing
+             is passed, the file will be saved to the current working
+             directory with the original filename.
+
     Returns
     -------
+    Relative path of the saved file.
+
     Notes
     -----
     This function has been slightly adapted from:
