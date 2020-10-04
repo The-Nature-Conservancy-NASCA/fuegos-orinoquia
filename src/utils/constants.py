@@ -12,9 +12,7 @@ EARTHDATA_PASSWORD = os.environ.get("EARTHDATA_PASSWORD")
 
 # Download link for Landsat's World Reference System-2 descending
 # (daytime) grid.
-WRS2_DESCENDING_GRID_URL = (
-    "https://www.usgs.gov/media/files/landsat-wrs-2-descending-path-row-shapefile"
-)
+WRS2_DESCENDING_GRID_URL = "https://prd-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/atoms/files/WRS2_descending_0.zip"
 
 # Dictionary with paths to save the files of an AppEEARS task. The number
 # of elements in the dictionary has to be the same of tasks that are
