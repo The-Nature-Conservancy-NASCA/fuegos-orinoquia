@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
 
-from src.utils.constants import WINDOWS
+from src.utils.constants import REGIONS
 
 
 if __name__ == "__main__":
@@ -19,17 +19,17 @@ if __name__ == "__main__":
     # Project's root
     os.chdir("../..")
 
-    for i, window in enumerate(WINDOWS):
+    for i, region in enumerate(REGIONS):
 
-        output_folder = f"figures/{window['name']}"
+        output_folder = f"figures/{region['name']}"
         if not os.path.exists(output_folder):
             os.makedirs(output_folder)
 
         # Create an empty figure with two subplots.
         fig, ax = plt.subplots(ncols=1, nrows=2, sharex=True, figsize=(14, 8))
-        fig.suptitle(window["name"])
+        fig.suptitle(region["name"])
 
-        series_filepath = f"results/xlsx/{window['name']}/fire_series.xlsx"
+        series_filepath = f"results/xlsx/{region['name']}/fire_series.xlsx"
         monthly_series = pd.read_excel(series_filepath, sheet_name="Monthly")
         daily_series = pd.read_excel(series_filepath, sheet_name="Daily")
 

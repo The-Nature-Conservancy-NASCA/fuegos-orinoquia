@@ -10,20 +10,20 @@ import numpy as np
 import seaborn as sns
 from osgeo import gdal
 
-from src.utils.constants import WINDOWS, NODATA_VALUE
+from src.utils.constants import REGIONS, NODATA_VALUE
 
 if __name__ == "__main__":
 
     # Project's root
     os.chdir("../..")
 
-    for i, window in enumerate(WINDOWS):
+    for i, region in enumerate(REGIONS):
 
-        output_folder = f"figures/{window['name']}"
+        output_folder = f"figures/{region['name']}"
         if not os.path.exists(output_folder):
             os.makedirs(output_folder)
 
-        ds = gdal.Open(f"data/tif/return_intervals/RI_500m_{window['name']}.tif")
+        ds = gdal.Open(f"data/tif/return_intervals/RI_500m_{region['name']}.tif")
         arr = ds.ReadAsArray()
         fri = arr[arr != NODATA_VALUE]
 

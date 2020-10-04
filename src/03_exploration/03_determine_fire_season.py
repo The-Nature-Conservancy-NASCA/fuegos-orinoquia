@@ -21,7 +21,7 @@ from calendar import month_abbr
 
 import pandas as pd
 
-from src.utils.constants import WINDOWS
+from src.utils.constants import REGIONS
 
 
 if __name__ == "__main__":
@@ -35,10 +35,10 @@ if __name__ == "__main__":
 
     df = pd.DataFrame(columns=["window", "months"])
 
-    for window in WINDOWS:
+    for region in REGIONS:
 
         month_groups = pd.read_excel(
-            f"results/xlsx/{window['name']}/fire_groups.xlsx", sheet_name="Month"
+            f"results/xlsx/{region['name']}/fire_groups.xlsx", sheet_name="Month"
         )
 
         # Compute 80% threshold.
@@ -59,7 +59,7 @@ if __name__ == "__main__":
         fire_season_months = fire_season_months.apply(lambda x: month_abbr[x])
         months = fire_season_months.str.cat(sep="-")
 
-        df = df.append({"window": window["name"], "months": months}, ignore_index=True)
+        df = df.append({"window": region["name"], "months": months}, ignore_index=True)
 
     save_to = os.path.join(output_folder, "fire_season_months.csv")
     df.to_csv(save_to, index=False)

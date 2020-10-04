@@ -10,7 +10,7 @@ import os
 import pandas as pd
 import pymannkendall as mk
 
-from src.utils.constants import WINDOWS
+from src.utils.constants import REGIONS
 
 
 if __name__ == "__main__":
@@ -37,9 +37,9 @@ if __name__ == "__main__":
         ]
     )
 
-    for window in WINDOWS:
+    for region in REGIONS:
 
-        series_filepath = f"results/xlsx/{window['name']}/fire_series.xlsx"
+        series_filepath = f"results/xlsx/{region['name']}/fire_series.xlsx"
         monthly_series = pd.read_excel(series_filepath, sheet_name="Monthly")
 
         # Make sure the time column in the monthly series is interpreted.
@@ -52,7 +52,7 @@ if __name__ == "__main__":
         # Run Mann-Kendall trend test on the medians.
         mk_trend_test_result = mk.original_test(yearly_medians, alpha=0.05)
 
-        df.loc[len(df)] = [window["name"]] + list(mk_trend_test_result)
+        df.loc[len(df)] = [region["name"]] + list(mk_trend_test_result)
 
     save_to = os.path.join(output_folder, "burned_area_interannual_trend.csv")
     df.to_csv(save_to, index=False)

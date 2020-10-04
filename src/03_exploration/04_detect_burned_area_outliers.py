@@ -15,7 +15,7 @@ import numpy as np
 import pandas as pd
 from scipy import stats
 
-from src.utils.constants import WINDOWS
+from src.utils.constants import REGIONS
 
 
 if __name__ == "__main__":
@@ -27,13 +27,13 @@ if __name__ == "__main__":
     # Project's root
     os.chdir("../..")
 
-    for window in WINDOWS:
+    for region in REGIONS:
 
-        output_folder = f"results/csv/{window['name']}"
+        output_folder = f"results/csv/{region['name']}"
         if not os.path.exists(output_folder):
             os.makedirs(output_folder)
 
-        series_filepath = f"results/xlsx/{window['name']}/fire_series.xlsx"
+        series_filepath = f"results/xlsx/{region['name']}/fire_series.xlsx"
         monthly_series = pd.read_excel(series_filepath, sheet_name="Monthly")
 
         # Make sure the time column in the monthly series is interpreted

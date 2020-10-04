@@ -12,7 +12,7 @@ import numpy as np
 import pandas as pd
 import xarray as xr
 
-from src.utils.constants import WINDOWS, AREA_FACTOR
+from src.utils.constants import REGIONS, AREA_FACTOR
 
 
 if __name__ == "__main__":
@@ -20,14 +20,14 @@ if __name__ == "__main__":
     # Project's root
     os.chdir("../..")
 
-    for window in WINDOWS:
+    for region in REGIONS:
 
-        output_folder = f"results/xlsx/{window['name']}"
+        output_folder = f"results/xlsx/{region['name']}"
         if not os.path.exists(output_folder):
             os.makedirs(output_folder)
 
         window_ds = xr.open_dataset(
-            f"data/nc/MODIS/MCD64A1/MCD64A1_500m_{window['name']}.nc",
+            f"data/nc/MODIS/MCD64A1/MCD64A1_500m_{region['name']}.nc",
             mask_and_scale=False,
         )
 

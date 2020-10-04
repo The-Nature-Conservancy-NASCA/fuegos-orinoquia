@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
 
-from src.utils.constants import WINDOWS
+from src.utils.constants import REGIONS
 
 
 if __name__ == "__main__":
@@ -20,13 +20,13 @@ if __name__ == "__main__":
     # Project's root
     os.chdir("../..")
 
-    for i, window in enumerate(WINDOWS):
+    for i, region in enumerate(REGIONS):
 
-        output_folder = f"figures/{window['name']}"
+        output_folder = f"figures/{region['name']}"
         if not os.path.exists(output_folder):
             os.makedirs(output_folder)
 
-        series_filepath = f"results/xlsx/{window['name']}/fire_series.xlsx"
+        series_filepath = f"results/xlsx/{region['name']}/fire_series.xlsx"
         monthly_series = pd.read_excel(series_filepath, sheet_name="Monthly")
         daily_series = pd.read_excel(series_filepath, sheet_name="Daily")
 
@@ -43,7 +43,7 @@ if __name__ == "__main__":
         daily_series["doy"] = daily_series["time"].dt.dayofyear
 
         fig, ax = plt.subplots(ncols=1, nrows=2, figsize=(14, 8))
-        fig.suptitle(window["name"])
+        fig.suptitle(region["name"])
 
         sns.barplot(data=monthly_series, x="month", y="area", ax=ax[0], color="gray")
         sns.barplot(data=daily_series, x="doy", y="area", ax=ax[1], color="gray", errwidth=0.5)
