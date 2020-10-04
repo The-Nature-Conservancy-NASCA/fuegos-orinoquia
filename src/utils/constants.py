@@ -3,16 +3,13 @@
 #
 # Purpose: Contains constants used by several scripts in the project.
 # -----------------------------------------------------------------------
+import datetime
 import os
 
 # Earthdata's username and password. Either create the respective
 # environment variables or change these two lines with your credentials.
 EARTHDATA_USERNAME = os.environ.get("EARTHDATA_USERNAME")
 EARTHDATA_PASSWORD = os.environ.get("EARTHDATA_PASSWORD")
-
-# Download link for Landsat's World Reference System-2 descending
-# (daytime) grid.
-WRS2_DESCENDING_GRID_URL = "https://prd-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/atoms/files/WRS2_descending_0.zip"
 
 # Dictionary with paths to save the files of an AppEEARS task. The number
 # of elements in the dictionary has to be the same of tasks that are
@@ -32,3 +29,16 @@ REGIONS = [
 AREA_FACTOR = (500 * 500) / 10000
 
 NODATA_VALUE = -9999
+
+# Download link for Landsat's World Reference System-2 descending
+# (daytime) grid.
+WRS2_DESCENDING_GRID_URL = "https://prd-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/atoms/files/WRS2_descending_0.zip"
+
+S3_LANDSAT8_SCENE_LIST_URL = "http://landsat-pds.s3.amazonaws.com/c1/L8/scene_list.gz"
+
+# Landsat 8 acquisition date start and end in the year-month-day
+# format.
+L8_START_DATE = "2017-12-01"
+L8_END_DATE = "2018-03-31"
+
+L8_BANDS = ("B3", "B4", "B5")
