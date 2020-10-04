@@ -5,6 +5,7 @@
 # -----------------------------------------------------------------------
 import cgi
 import os
+import zipfile
 from typing import Union
 
 import numpy as np
@@ -26,13 +27,13 @@ def array_to_geotiff(
 
     Parameters
     ----------
-    arr:      2D or 3D array.
-    fn:       output GeoTIFF's file name.
-    sr:       output GeoTIFF's spatial reference in a WKT string.
-    gt:       output GeoTIFF's geotransform.
-    gdtype:   GDAL data type.
-    nd_val:   output GeoTIFF's NoData value.
-    options:  GDAL creation options.
+    arr:     d2D or 3D array.
+    fn:      output GeoTIFF's file name.
+    sr:      output GeoTIFF's spatial reference in a WKT string.
+    gt:      output GeoTIFF's geotransform.
+    gdtype:  GDAL data type.
+    nd_val:  output GeoTIFF's NoData value.
+    options: GDAL creation options.
 
     Returns
     -------
@@ -117,3 +118,25 @@ def download_http_file(url: str, save_to: str = None) -> str:
 
     except requests.exceptions.HTTPError as err:
         raise Exception(f"Error while downloading task. {err}")
+
+
+def unzip_file(src: str, dst: str) -> None:
+    """
+    Unzips zip files.
+
+    Parameters
+    ----------
+    src: source zipped file.
+    dst: target directory.
+
+    Returns
+    -------
+    None
+    """
+    ext = os.path.splitext(src)[1]
+
+    if ext == '.zip':
+        with zipfile.ZipFile(src, 'r') as zip_ref:
+            zip_ref.extractall(dst)
+    else:
+        raise NotImplementedError
