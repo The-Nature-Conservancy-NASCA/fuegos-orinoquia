@@ -41,4 +41,3 @@ S3_LANDSAT8_SCENE_LIST_URL = "http://landsat-pds.s3.amazonaws.com/c1/L8/scene_li
 L8_START_DATE = "2017-12-01"
 L8_END_DATE = "2018-03-31"
 
-L8_BANDS = ("B3", "B4", "B5")
