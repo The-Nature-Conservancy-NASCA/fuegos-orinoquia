@@ -16,7 +16,7 @@ if __name__ == "__main__":
     # Project's root
     os.chdir("../..")
 
-    output_folder = "data/shp/misc"
+    output_folder = "data/shp/landsat"
     if not os.path.exists(output_folder):
         os.makedirs(output_folder)
 

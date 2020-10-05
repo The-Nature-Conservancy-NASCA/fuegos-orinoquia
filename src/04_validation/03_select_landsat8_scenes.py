@@ -19,7 +19,7 @@ if __name__ == "__main__":
     if not os.path.exists(output_folder):
         os.makedirs(output_folder)
 
-    filepath = "data/shp/misc/WRS2_descending_orinoquia.shp"
+    filepath = "data/shp/landsat/WRS2_descending_orinoquia.shp"
     wrs2_grid_aoi = geopandas.read_file(filepath)
 
     # Get a DataFrame with the S3 Landsat 8 scene list from an URL.

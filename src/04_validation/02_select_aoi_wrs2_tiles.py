@@ -15,12 +15,12 @@ if __name__ == "__main__":
     # Project's root
     os.chdir("../..")
 
-    output_folder = "data/shp/misc"
+    output_folder = "data/shp/landsat"
     if not os.path.exists(output_folder):
         os.makedirs(output_folder)
 
     # Unzip file and delete original zip file.
-    filepath = "data/shp/misc/wrs2_descending_grid.zip"
+    filepath = "data/shp/landsat/wrs2_descending_grid.zip"
     unzip_file(filepath, output_folder)
     os.remove(filepath)
 
