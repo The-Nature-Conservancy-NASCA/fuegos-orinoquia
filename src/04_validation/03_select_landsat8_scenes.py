@@ -8,7 +8,12 @@ import os
 import geopandas
 import pandas as pd
 
-from src.utils.constants import S3_LANDSAT8_SCENE_LIST_URL, L8_START_DATE, L8_END_DATE
+from src.utils.constants import (
+    S3_LANDSAT8_SCENE_LIST_URL,
+    L8_START_DATE,
+    L8_END_DATE,
+    L8_CLOUD_THRESHOLD
+)
 
 if __name__ == "__main__":
 
@@ -40,7 +45,7 @@ if __name__ == "__main__":
         (l8_scenes["acquisitionDate"] >= L8_START_DATE)
         & (l8_scenes["acquisitionDate"] <= L8_END_DATE)
         & (l8_scenes["pr"].isin(wrs2_grid_aoi["PR"]))
-        & (l8_scenes["cloudCover"] <= 10)
+        & (l8_scenes["cloudCover"] <= L8_CLOUD_THRESHOLD)
         & (~l8_scenes["productId"].str.endswith("RT"))
         & (~l8_scenes["productId"].str.endswith("T2"))
     ]

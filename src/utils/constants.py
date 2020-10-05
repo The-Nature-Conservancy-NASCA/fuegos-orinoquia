@@ -30,6 +30,8 @@ AREA_FACTOR = (500 * 500) / 10000
 
 NODATA_VALUE = -9999
 
+BURNED_AREA_THRESHOLD = 0.8
+
 # Download link for Landsat's World Reference System-2 descending
 # (daytime) grid.
 WRS2_DESCENDING_GRID_URL = "https://prd-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/atoms/files/WRS2_descending_0.zip"
@@ -41,3 +43,4 @@ S3_LANDSAT8_SCENE_LIST_URL = "http://landsat-pds.s3.amazonaws.com/c1/L8/scene_li
 L8_START_DATE = "2017-12-01"
 L8_END_DATE = "2018-03-31"
 
+L8_CLOUD_THRESHOLD = 10

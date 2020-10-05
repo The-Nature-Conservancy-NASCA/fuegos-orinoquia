@@ -21,7 +21,7 @@ from calendar import month_abbr
 
 import pandas as pd
 
-from src.utils.constants import REGIONS
+from src.utils.constants import REGIONS, BURNED_AREA_THRESHOLD
 
 
 if __name__ == "__main__":
@@ -42,7 +42,7 @@ if __name__ == "__main__":
         )
 
         # Compute 80% threshold.
-        threshold = month_groups["area"].sum() * 0.8
+        threshold = month_groups["area"].sum() * BURNED_AREA_THRESHOLD
 
         # Sort months from larger to smallest burned area and compute the
         # cumulative sum.
