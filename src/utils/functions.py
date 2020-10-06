@@ -13,17 +13,18 @@ import requests
 from osgeo import gdal
 
 
-def array_to_geotiff(
+def array_to_raster(
     arr: np.ndarray,
     fn: str,
     sr: str,
     gt: Union[list, tuple],
     gdtype: int,
+    driver: str = "GTiff",
     nd_val: float = None,
-    options: list = [],
+    options: list = []
 ) -> None:
     """
-    Writes a 2D or 3D NumPy array to a GeoTIFF file in disk.
+    Writes a 2D or 3D NumPy array to a raster file in disk.
 
     Parameters
     ----------
@@ -32,6 +33,7 @@ def array_to_geotiff(
     sr:      output GeoTIFF's spatial reference in a WKT string.
     gt:      output GeoTIFF's geotransform.
     gdtype:  GDAL data type.
+    driver:  raster's driver name.
     nd_val:  output GeoTIFF's NoData value.
     options: GDAL creation options.
 
@@ -47,23 +49,29 @@ def array_to_geotiff(
     cols = arr.shape[-1]
     rows = arr.shape[-2]
 
-    # Create empty GeoTIFF.
-    driver = gdal.GetDriverByName("GTiff")
-    out_tif = driver.Create(fn, cols, rows, bands, gdtype, options)
+    # Create empty raster.
+    driver = gdal.GetDriverByName(driver)
+    if not driver:
+        raise Exception("Driver name is not valid. Check "
+                        "https://gdal.org/drivers/raster/index.html for valid names.")
+    out_ds = driver.Create(fn, cols, rows, bands, gdtype, options)
 
     # Set projection and geotransform.
-    out_tif.SetProjection(sr)
-    out_tif.SetGeoTransform(gt)
+    out_ds.SetProjection(sr)
+    out_ds.SetGeoTransform(gt)
 
-    # set NoData value and write data.
-    band = out_tif.GetRasterBand(1)
-    if nd_val:
-        band.SetNoDataValue(nd_val)
-    band.WriteArray(arr)
+    # Write data to each band and NoData value if specified.
+    for i in range(bands):
+        band = out_ds.GetRasterBand(i+1)
+        if bands > 1:
+            band.WriteArray(arr[i])
+        else:
+            band.WriteArray(arr)
+        if nd_val:
+            band.SetNoDataValue(nd_val)
+        band.FlushCache()
 
-    # Save file.
-    band.FlushCache()
-    del band, out_tif
+    return out_ds
 
 
 def download_http_file(url: str, save_to: str = None) -> str:

@@ -13,7 +13,7 @@ import xarray as xr
 from osgeo import gdalconst
 
 from src.utils.constants import REGIONS, NODATA_VALUE
-from src.utils.functions import array_to_geotiff
+from src.utils.functions import array_to_raster
 
 
 if __name__ == "__main__":
@@ -21,7 +21,7 @@ if __name__ == "__main__":
     # Project's root
     os.chdir("../..")
 
-    output_folder = f"data/tif/return_intervals"
+    output_folder = "data/tif/return_intervals"
     if not os.path.exists(output_folder):
         os.makedirs(output_folder)
 
@@ -53,12 +53,13 @@ if __name__ == "__main__":
         save_to = os.path.join(output_folder, f"RI_500m_{region['name']}.tif")
         sr = window_ds.crs.attrs["crs_wkt"]
         gt = tuple(map(float, window_ds.crs.attrs["GeoTransform"].split(" ")))
-        array_to_geotiff(
+        array_to_raster(
             return_interval,
             save_to,
             sr,
             gt,
             gdtype=gdalconst.GDT_Float32,
+            driver="GTiff",
             nd_val=NODATA_VALUE,
             options=["COMPRESS=LZW"],
         )
