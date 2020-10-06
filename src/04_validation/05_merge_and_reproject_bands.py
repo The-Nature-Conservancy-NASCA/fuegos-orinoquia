@@ -35,7 +35,6 @@ if __name__ == "__main__":
 
         for band_file in band_files:
             ds = gdal.Open(band_file)
-            ds.GetRasterBand(1).GetNoDataValue()
             arr = ds.ReadAsArray()
             bands.append(arr)
 
