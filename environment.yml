@@ -12,9 +12,12 @@ dependencies:
   - openpyxl
   - pandas
   - pymannkendall
+  - pyproj
   - rasterio
   - requests
   - rioxarray
+  - scikit-image
+  - scikit-learn
   - seaborn
   - shapely
   - xarray
