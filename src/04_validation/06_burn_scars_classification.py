@@ -34,9 +34,6 @@ if __name__ == "__main__":
 
     scars = geopandas.GeoDataFrame(columns=["productId", "date"])
 
-    path_row = "005056"
-    product_id = "LC08_L1TP_005056_20171222_20180103_01_T1"
-
     for _, scene in l8_scenes_subset.iterrows():
 
         acquisition_date = scene["acquisitionDate"]
@@ -44,7 +41,10 @@ if __name__ == "__main__":
         path_row = str(scene["pr"]).zfill(6)
         src = rasterio.open(f"data/tif/landsat/{path_row}/{product_id}.tif")
 
+        # print(f"Processing scene: {product_id}")
+
         scene_samples = training_samples.query(f"productId == '{product_id}'")
+        scene_samples = scene_samples.reset_index(drop=True)
         extra_cols = [f"b{i+1}" for i in range(src.count)]
         scene_samples[extra_cols] = np.nan
 
