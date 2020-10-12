@@ -30,7 +30,7 @@ if __name__ == "__main__":
     l8_scenes_subset = pd.read_csv(l8_scenes_subset_filepath)
 
     cols = ["productId", "p11", "p12", "p21", "p22"]
-    accuracy = pd.DataFrame(columns=cols)
+    metrics = pd.DataFrame(columns=cols)
 
     for _, scene in l8_scenes_subset.iterrows():
 
@@ -38,6 +38,8 @@ if __name__ == "__main__":
         acquisition_date = scene["acquisitionDate"]
         product_id = scene["productId"]
         pr = str(scene["pr"]).zfill(6)
+
+        print(f"Processing scene {product_id}...")
 
         # Filter burned area data by date over a one month span.
         upper_date = pd.to_datetime(acquisition_date) + pd.Timedelta(2, unit="D")
@@ -73,6 +75,7 @@ if __name__ == "__main__":
         wrs2_tile = wrs2_grid.query(f"PR == '{pr}'")
         tile_scars = geopandas.clip(scars_subset, wrs2_tile)
         tile_scars = geopandas.clip(tile_scars, aoi)
+        tile_scars = tile_scars.explode().reset_index(drop=True)
         combined_tile_scars = MultiPolygon(tile_scars.geometry.values)
 
         # Create raster grid.
@@ -136,16 +139,18 @@ if __name__ == "__main__":
             1 - tile_grid.query("category == 0")["proportion"]
         )
 
-        accuracy.append(
+        metrics = metrics.append(
             {
                 "productId": product_id,
                 "p11": tile_grid["p11"].mean(),
                 "p12": tile_grid["p12"].mean(),
                 "p21": tile_grid["p21"].mean(),
                 "p22": tile_grid["p22"].mean(),
-            }
+            }, ignore_index=True
         )
 
-    accuracy["OA"] = accuracy["p11"] + accuracy["p22"]
-    accuracy["Ce"] = accuracy["p12"] / (accuracy["p11"] + accuracy["p11"])
-    accuracy["Oe"] = accuracy["p21"] / (accuracy["p11"] + accuracy["p21"])
+    metrics["OA"] = metrics["p11"] + metrics["p22"]
+    metrics["Ce"] = metrics["p12"] / (metrics["p11"] + metrics["p11"])
+    metrics["Oe"] = metrics["p21"] / (metrics["p11"] + metrics["p21"])
+
+    metrics.to_csv("results/csv/validation/metrics.csv")
