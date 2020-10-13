@@ -150,7 +150,7 @@ if __name__ == "__main__":
         )
 
     metrics["OA"] = metrics["p11"] + metrics["p22"]
-    metrics["Ce"] = metrics["p12"] / (metrics["p11"] + metrics["p11"])
+    metrics["Ce"] = metrics["p12"] / (metrics["p11"] + metrics["p12"])
     metrics["Oe"] = metrics["p21"] / (metrics["p11"] + metrics["p21"])
 
     metrics.to_csv("results/csv/validation/metrics.csv")
