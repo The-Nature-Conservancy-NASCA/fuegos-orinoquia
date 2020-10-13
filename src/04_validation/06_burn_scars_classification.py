@@ -119,7 +119,9 @@ if __name__ == "__main__":
                     ignore_index=True
                 )
 
-    # Add spatial reference to the GeoDataFrame and export it to a
-    # shapefile on disk.
+    # Add spatial reference to the GeoDataFrame, fix potential topology
+    # errors by running a 0 distance buffer and export it to a shapefile
+    # on disk.
     scars.crs = src.crs
+    scars.geometry = scars.geometry.buffer(0)
     scars.to_file("data/shp/scars/scars.shp")
