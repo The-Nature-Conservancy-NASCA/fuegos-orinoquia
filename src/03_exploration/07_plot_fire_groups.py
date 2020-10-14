@@ -8,7 +8,9 @@
 # -----------------------------------------------------------------------
 import os
 
+import matplotlib.gridspec as gridspec
 import matplotlib.pyplot as plt
+import matplotlib.ticker as ticker
 import pandas as pd
 import seaborn as sns
 
@@ -20,11 +22,14 @@ if __name__ == "__main__":
     # Project's root
     os.chdir("../..")
 
-    for i, region in enumerate(REGIONS):
+    output_folder = "figures"
+    if not os.path.exists(output_folder):
+        os.makedirs(output_folder)
 
-        output_folder = f"figures/{region['name']}"
-        if not os.path.exists(output_folder):
-            os.makedirs(output_folder)
+    fig = plt.figure(figsize=(11.69, 8.27))
+    outer = gridspec.GridSpec(2, 2, wspace=0.2, hspace=0.2)
+
+    for i, region in enumerate(REGIONS):
 
         series_filepath = f"results/xlsx/{region['name']}/fire_series.xlsx"
         monthly_series = pd.read_excel(series_filepath, sheet_name="Monthly")
@@ -42,14 +47,49 @@ if __name__ == "__main__":
 
         daily_series["doy"] = daily_series["time"].dt.dayofyear
 
-        fig, ax = plt.subplots(ncols=1, nrows=2, figsize=(14, 8))
-        fig.suptitle(region["name"])
+        inner = gridspec.GridSpecFromSubplotSpec(
+            2, 1, subplot_spec=outer[i], wspace=0.1, hspace=0.1
+        )
 
-        sns.barplot(data=monthly_series, x="month", y="area", ax=ax[0], color="gray")
-        sns.barplot(data=daily_series, x="doy", y="area", ax=ax[1], color="gray", errwidth=0.5)
-        ax[1].set_xticks(range(1, 365, 15))
-        ax[0].set_ylabel("Burned area (ha)")
-        ax[1].set_ylabel("Burned area (ha)")
+        axt = plt.Subplot(fig, inner[0])
+        axb = plt.Subplot(fig, inner[1])
 
-        save_to = os.path.join(output_folder, "fire_groups.png")
-        fig.savefig(save_to)
+        sns.barplot(
+            data=monthly_series,
+            x="month",
+            y="area",
+            ax=axt,
+            facecolor="none",
+            edgecolor="#263238",
+            errcolor="#607d8b",
+            errwidth=1
+        )
+        sns.lineplot(
+            data=daily_series, x="doy", y="area", ax=axb, linewidth=0.8, color="#263238"
+        )
+
+        axb.set_xticks([1, 32, 61, 92, 122, 153, 183, 214, 245, 275, 306, 336])
+        axt.set_ylabel("Burned area (ha)", fontsize=8)
+        axb.set_ylabel("Burned area (ha)", fontsize=8)
+
+        axb.xaxis.label.set_visible(False)
+
+        axt.set_title(region["name"].upper(), fontsize=8)
+
+        axt.yaxis.tick_right()
+        axb.yaxis.tick_right()
+        axt.yaxis.set_major_formatter(ticker.FormatStrFormatter("%.0e"))
+        axb.yaxis.set_major_formatter(ticker.FormatStrFormatter("%.0e"))
+
+        axt.tick_params(labelsize=8)
+        axb.tick_params(labelsize=8)
+
+        axt.tick_params(axis="x", direction="in", length=0)
+
+        axb.margins(0.01, 0.05)
+
+        fig.add_subplot(axt)
+        fig.add_subplot(axb)
+
+    save_to = os.path.join(output_folder, "fire_groups.png")
+    fig.savefig(save_to, bbox_inches="tight")
