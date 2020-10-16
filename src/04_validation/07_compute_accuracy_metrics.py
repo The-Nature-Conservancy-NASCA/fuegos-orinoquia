@@ -19,7 +19,6 @@ if __name__ == "__main__":
     os.chdir("../..")
 
     scars = geopandas.read_file("data/shp/scars/scars.shp")
-    scars.geometry = scars.geometry.buffer(0)
     wrs2_grid = geopandas.read_file("data/shp/landsat/WRS2_descending_orinoquia.shp")
     aoi = geopandas.read_file("data/shp/regions/orinoquia_ncs.shp")
 
@@ -153,4 +152,4 @@ if __name__ == "__main__":
     metrics["Ce"] = metrics["p12"] / (metrics["p11"] + metrics["p12"])
     metrics["Oe"] = metrics["p21"] / (metrics["p11"] + metrics["p21"])
 
-    metrics.to_csv("results/csv/validation/metrics.csv")
+    metrics.to_csv("results/csv/validation/metrics.csv", index=False)
