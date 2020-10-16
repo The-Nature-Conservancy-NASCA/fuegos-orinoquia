@@ -21,7 +21,7 @@ if __name__ == "__main__":
     if not os.path.exists(output_folder):
         os.makedirs(output_folder)
 
-    fig, axs = plt.subplots(2, 2, sharex=True, sharey=True)
+    fig, axs = plt.subplots(2, 2, sharex=True, sharey=True, figsize=(11.69, 4.14))
 
     for i, region in enumerate(REGIONS):
 
@@ -55,4 +55,5 @@ if __name__ == "__main__":
         ax.set_title(region["name"].upper(), fontsize=8)
 
     save_to = os.path.join(output_folder, "return_interval_distribution.pdf")
-    fig.savefig(save_to)
+    plt.subplots_adjust(hspace=0.5)
+    fig.savefig(save_to, bbox_inches="tight")
