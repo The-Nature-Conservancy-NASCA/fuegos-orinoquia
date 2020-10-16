@@ -91,5 +91,5 @@ if __name__ == "__main__":
         fig.add_subplot(axt)
         fig.add_subplot(axb)
 
-    save_to = os.path.join(output_folder, "fire_groups.png")
+    save_to = os.path.join(output_folder, "fire_groups.pdf")
     fig.savefig(save_to, bbox_inches="tight")
