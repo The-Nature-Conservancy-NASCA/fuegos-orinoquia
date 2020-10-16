@@ -75,20 +75,23 @@ if __name__ == "__main__":
         save_to = os.path.join(output_folder, "fire_groups.xlsx")
         with pd.ExcelWriter(save_to) as writer:
 
-            # Compute total burned area for each year in the date
-            # range.
-            year_groups = monthly_series.groupby(monthly_series.index.year).sum()
+            # Specify functions to compute metrics for all groups.
+            funcs = [np.sum, np.median, np.mean, np.std]
+
+            # Compute specific metrics of burned area for each year
+            # in the date range.
+            year_groups = monthly_series.groupby(monthly_series.index.year).agg(funcs)
             year_groups.index.name = "year"
             year_groups.to_excel(writer, sheet_name="Year")
 
-            # Compute total burned area for each month from january to
-            # december.
-            month_groups = monthly_series.groupby(monthly_series.index.month).sum()
+            # Compute specific metrics of burned area for each month
+            # from january to december.
+            month_groups = monthly_series.groupby(monthly_series.index.month).agg(funcs)
             month_groups.index.name = "month"
             month_groups.to_excel(writer, sheet_name="Month")
 
             # Compute total burned area for each day of the year (e.g.
             # 1 - 366; including leap years)
-            day_groups = daily_series.groupby(daily_series.index.dayofyear).sum()
+            day_groups = daily_series.groupby(daily_series.index.dayofyear).agg(funcs)
             day_groups.index.name = "day"
             day_groups.to_excel(writer, sheet_name="Day")
