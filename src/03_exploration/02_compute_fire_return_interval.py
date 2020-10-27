@@ -21,7 +21,7 @@ if __name__ == "__main__":
     # Project's root
     os.chdir("../..")
 
-    output_folder = "data/tif/return_intervals"
+    output_folder = "data/tif/fri"
     if not os.path.exists(output_folder):
         os.makedirs(output_folder)
 
@@ -51,8 +51,8 @@ if __name__ == "__main__":
         # Create output GeoTIFF file using metadata from the NetCDF4
         # file.
         save_to = os.path.join(output_folder, f"RI_500m_{region['name']}.tif")
-        sr = window_ds.crs.attrs["crs_wkt"]
-        gt = tuple(map(float, window_ds.crs.attrs["GeoTransform"].split(" ")))
+        sr = window_ds.rio.crs.to_wkt()
+        gt = window_ds.rio.transform()
         array_to_raster(
             return_interval,
             save_to,
