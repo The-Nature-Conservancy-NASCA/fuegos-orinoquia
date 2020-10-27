@@ -18,8 +18,6 @@ if __name__ == "__main__":
     # Project's root
     os.chdir("../..")
 
-    output_folder = "data/nc/MODIS/MCD64A1"
-
     ds = xr.open_dataset(
         "data/nc/MODIS/MCD64A1/MCD64A1.006_500m_aid0001.nc", mask_and_scale=False
     )
@@ -33,8 +31,14 @@ if __name__ == "__main__":
     # Clip the original NetCDF4 data for each specified window and save
     # to a new NetCDF4 file.
     for region in REGIONS:
+
+        output_folder = f"data/nc/MODIS/MCD64A1/{region['name']}"
+        if not os.path.exists(output_folder):
+            os.makedirs(output_folder)
+
         mask = geopandas.read_file(region["path"])
         geometry = mask.geometry.apply(mapping)
         window_ds = ds.rio.clip(geometry)
-        save_to = os.path.join(output_folder, f"MCD64A1_500m_{region['name']}.nc")
+
+        save_to = os.path.join(output_folder, "MCD64A1_500m.nc")
         window_ds.to_netcdf(save_to)
