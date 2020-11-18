@@ -3,7 +3,6 @@
 #
 # Purpose: Contains constants used by several scripts in the project.
 # -----------------------------------------------------------------------
-import datetime
 import os
 
 # Earthdata's username and password. Either create the respective
@@ -17,10 +16,10 @@ EARTHDATA_PASSWORD = os.environ.get("EARTHDATA_PASSWORD")
 SAVE_PATHS = {"MCD64A1": "data/nc/MODIS/MCD64A1"}
 
 REGIONS = [
+    {"name": "flooded", "path": "data/shp/regions/flooded.shp"},
+    {"name": "highland", "path": "data/shp/regions/highland.shp"},
     {"name": "manacacias", "path": "data/shp/regions/manacacias.shp"},
-    {"name": "buffer", "path": "data/shp/regions/manacacias_buffer.shp"},
-    {"name": "ideam", "path": "data/shp/regions/orinoquia_ideam.shp"},
-    {"name": "ncs", "path": "data/shp/regions/orinoquia_ncs.shp"},
+    {"name": "orinoquia", "path": "data/shp/regions/orinoquia.shp"},
 ]
 
 # Factor to multiply number of pixels with and compute an area measure.
@@ -52,3 +51,10 @@ L8_NODATA_VALUE = 0
 FILTER_NEIGHBOURS = 9
 
 AREA_THRESHOLD = 250000
+
+ACCESSIBILITY_FEATURES = [
+    {"name": "rivers", "path": "data/shp/accessibility/rivers.shp"},
+    {"name": "roads", "path": "data/shp/accessibility/roads.shp"},
+    {"name": "settlements", "path": "data/shp/accessibility/settlements.shp"}
+]
+
