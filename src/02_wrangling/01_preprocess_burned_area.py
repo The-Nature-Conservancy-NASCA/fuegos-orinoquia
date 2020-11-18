@@ -19,7 +19,7 @@ if __name__ == "__main__":
     os.chdir("../..")
 
     ds = xr.open_dataset(
-        "data/nc/MODIS/MCD64A1/MCD64A1.006_500m_aid0001.nc", mask_and_scale=False
+        "data/nc/MODIS/MCD64A1/original/MCD64A1.006_500m_aid0001.nc", mask_and_scale=False
     )
 
     # Although the original NetCDF4 data has already spatial dimensions
