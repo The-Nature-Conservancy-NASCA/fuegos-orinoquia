@@ -25,7 +25,7 @@ if __name__ == "__main__":
 
     for i, region in enumerate(REGIONS):
 
-        ds = gdal.Open(f"data/tif/return_intervals/RI_500m_{region['name']}.tif")
+        ds = gdal.Open(f"data/tif/fri/RI_500m_{region['name']}.tif")
         arr = ds.ReadAsArray()
         fri = arr[arr != NODATA_VALUE]
 

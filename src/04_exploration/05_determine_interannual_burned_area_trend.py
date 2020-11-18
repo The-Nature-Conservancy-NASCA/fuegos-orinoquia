@@ -45,6 +45,7 @@ if __name__ == "__main__":
         # Make sure the time column in the monthly series is interpreted.
         # as datetime.
         monthly_series["time"] = pd.to_datetime(monthly_series["time"])
+        monthly_series = monthly_series.query("time.dt.month in (1, 2, 3)")
 
         # Compute the median year-wise.
         yearly_medians = monthly_series.resample("Y", on="time").median()
@@ -54,5 +55,5 @@ if __name__ == "__main__":
 
         df.loc[len(df)] = [region["name"]] + list(mk_trend_test_result)
 
-    save_to = os.path.join(output_folder, "burned_area_interannual_trend.csv")
+    save_to = os.path.join(output_folder, "burned_area_interannual_season_trend.csv")
     df.to_csv(save_to, index=False)
