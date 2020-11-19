@@ -60,4 +60,3 @@ if __name__ == "__main__":
             )
             dst = os.path.join(output_folder, f"{feature.get('name')}_proximity.tif")
             gdal.Warp(dst, temp2, options=warp_options)
-
