@@ -16,10 +16,11 @@ EARTHDATA_PASSWORD = os.environ.get("EARTHDATA_PASSWORD")
 SAVE_PATHS = {"MCD64A1": "data/nc/MODIS/MCD64A1"}
 
 REGIONS = [
+    {"name": "orinoquia", "path": "data/shp/regions/orinoquia.shp"},
     {"name": "flooded", "path": "data/shp/regions/flooded.shp"},
     {"name": "highland", "path": "data/shp/regions/highland.shp"},
-    {"name": "manacacias", "path": "data/shp/regions/manacacias.shp"},
-    {"name": "orinoquia", "path": "data/shp/regions/orinoquia.shp"},
+    {"name": "dissected", "path": "data/shp/regions/dissected.shp"},
+    {"name": "shield", "path": "data/shp/regions/shield.shp"}
 ]
 
 # Factor to multiply number of pixels with and compute an area measure.
@@ -57,4 +58,3 @@ ACCESSIBILITY_FEATURES = [
     {"name": "roads", "path": "data/shp/accessibility/roads.shp"},
     {"name": "settlements", "path": "data/shp/accessibility/settlements.shp"}
 ]
-
