@@ -19,8 +19,7 @@ REGIONS = [
     {"name": "orinoquia", "path": "data/shp/regions/orinoquia.shp"},
     {"name": "flooded", "path": "data/shp/regions/flooded.shp"},
     {"name": "highland", "path": "data/shp/regions/highland.shp"},
-    {"name": "dissected", "path": "data/shp/regions/dissected.shp"},
-    {"name": "shield", "path": "data/shp/regions/shield.shp"}
+    {"name": "dissected", "path": "data/shp/regions/dissected.shp"}
 ]
 
 # Factor to multiply number of pixels with and compute an area measure.
