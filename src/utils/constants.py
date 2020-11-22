@@ -53,9 +53,9 @@ FILTER_NEIGHBOURS = 9
 AREA_THRESHOLD = 250000
 
 ACCESSIBILITY_FEATURES = [
+    {"name": "popc", "path": "data/shp/accessibility/popc.shp"},
     {"name": "rivers", "path": "data/shp/accessibility/rivers.shp"},
-    {"name": "roads", "path": "data/shp/accessibility/roads.shp"},
-    {"name": "settlements", "path": "data/shp/accessibility/settlements.shp"}
+    {"name": "roads", "path": "data/shp/accessibility/roads.shp"}
 ]
 
 DISTANCE_FACTOR = 0.5
