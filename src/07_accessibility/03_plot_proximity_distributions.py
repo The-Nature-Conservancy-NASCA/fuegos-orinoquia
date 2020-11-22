@@ -101,7 +101,7 @@ if __name__ == "__main__":
             ax.tick_params(labelsize=8)
 
             ax.text(
-                0.90, 0.75, feature_names[j].upper(), transform=ax.transAxes, fontsize=8
+                0.875, 0.75, feature_names[j].upper(), transform=ax.transAxes, fontsize=8
             )
 
             if j == 0:
