@@ -24,13 +24,16 @@ if __name__ == "__main__":
 
     for region in REGIONS:
 
-        fig, axs = plt.subplots(2, 2, figsize=(11.69, 4.14))
+        output_folder = f"figures/{region.get('name')}"
+        if not os.path.exists(output_folder):
+            os.makedirs(output_folder)
+
+        fig, axs = plt.subplots(2, 2, figsize=(11.69, 5.15))
 
         fn = f"data/nc/MODIS/MCD64A1/{region.get('name')}/MCD64A1_500m.nc"
         da = xr.open_dataset(fn, mask_and_scale=False)["Burn_Date"]
 
-        burns = (da > 0).sum(axis=0).values
-        burn_mask = burns > 0
+        burn_mask = (da > 0).any(axis=0)
 
         feature_names = [item.get("name") for item in ACCESSIBILITY_FEATURES]
         feature_names.append("combined")
@@ -46,8 +49,6 @@ if __name__ == "__main__":
 
             grid_proximity = arr[arr != NODATA_VALUE] * DISTANCE_FACTOR
             burn_proximity = arr[(arr != NODATA_VALUE) & burn_mask] * DISTANCE_FACTOR
-            # burn_proximity = np.repeat(arr[burn_mask], burns[burn_mask])
-            # burn_proximity = burn_proximity[burn_proximity > 0] * DISTANCE_FACTOR
 
             sns.kdeplot(grid_proximity, fill=True, color="#263238", ax=ax)
             kwargs = dict(color="#263238", linestyle="--", linewidth=0.8)
@@ -62,3 +63,7 @@ if __name__ == "__main__":
             ax.set_title(name.upper(), fontsize=8)
             ax.yaxis.label.set_visible(False)
             ax.tick_params(labelsize=8)
+
+        save_to = os.path.join(output_folder, "proximity_distributions.pdf")
+        plt.subplots_adjust(hspace=0.5)
+        fig.savefig(save_to, bbox_inches="tight")
