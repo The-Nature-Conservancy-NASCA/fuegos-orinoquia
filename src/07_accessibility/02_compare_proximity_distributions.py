@@ -55,5 +55,5 @@ if __name__ == "__main__":
             ks_stat, p = stats.ks_2samp(grid_proximity, burn_proximity)
             df.loc[i, name] = ks_stat
 
-    save_to = os.path.join(output_folder, "kolmogorov_smirnov.py")
+    save_to = os.path.join(output_folder, "kolmogorov_smirnov.csv")
     df.to_csv(save_to, index=False)
