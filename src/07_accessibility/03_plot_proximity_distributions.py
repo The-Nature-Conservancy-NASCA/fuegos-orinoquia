@@ -7,7 +7,6 @@ import os
 
 import matplotlib.gridspec as gridspec
 import matplotlib.pyplot as plt
-import matplotlib.ticker as ticker
 import numpy as np
 import seaborn as sns
 import xarray as xr
@@ -41,36 +40,69 @@ if __name__ == "__main__":
         da = xr.open_dataset(fn, mask_and_scale=False)["Burn_Date"]
 
         burn_mask = (da > 0).any(axis=0)
+        burn_sum = (da > 0).sum(axis=0).values
 
         feature_names = [item.get("name") for item in ACCESSIBILITY_FEATURES]
-        feature_names.append("combined")
+        feature_names.append("comb")
 
-        for j, name in enumerate(feature_names):
+        grid = []
+        burn = []
+
+        for name in feature_names:
 
             proximity_fn = f"data/tif/proximity/{region.get('name')}/{name}_proximity.tif"
-
-            ax = plt.Subplot(fig, inner[j])
 
             ds = gdal.Open(proximity_fn)
             arr = ds.ReadAsArray()
 
             grid_proximity = arr[arr != NODATA_VALUE] * DISTANCE_FACTOR
-            burn_proximity = arr[(arr != NODATA_VALUE) & burn_mask] * DISTANCE_FACTOR
 
-            sns.kdeplot(grid_proximity, fill=True, color="#263238", ax=ax)
+            mask = (arr != NODATA_VALUE) & burn_sum.astype(bool)
+            burn_proximity = np.repeat(arr[mask], burn_sum[mask]) * DISTANCE_FACTOR
+
+            grid.append(grid_proximity)
+            burn.append(burn_proximity)
+
+        lim_left = min(np.min(grid[0]), np.min(burn[0]))
+        lim_right = max(np.max(grid[0]), np.max(burn[0]))
+
+        for j in range(1, len(feature_names)):
+            min_val = min(np.min(grid[j]), np.min(burn[j]))
+            if min_val < lim_left:
+                lim_left = min_val
+            max_val = max(np.max(grid[j]), np.max(burn[j]))
+            if max_val > lim_right:
+                lim_right = max_val
+
+        lim_left = np.floor(lim_left) - 5
+        lim_right = np.ceil(lim_right) + 5
+
+        for j in range(len(feature_names)):
+
+            ax = plt.Subplot(fig, inner[j])
+
+            sns.kdeplot(grid[j], fill=True, color="#263238", ax=ax)
             kwargs = dict(color="#263238", linestyle="--", linewidth=0.8)
-            ax.axvline(np.median(grid_proximity), **kwargs)
-            ax.axvline(np.percentile(grid_proximity, 95), **kwargs)
+            ax.axvline(np.median(grid[j]), **kwargs)
+            ax.axvline(np.percentile(grid[j], 95), **kwargs)
 
-            sns.kdeplot(burn_proximity, fill=True, color="#ff5722", ax=ax)
+            sns.kdeplot(burn[j], fill=True, color="#ff5722", ax=ax)
             kwargs = dict(color="#ff5722", linestyle="--", linewidth=0.8)
-            ax.axvline(np.median(burn_proximity), **kwargs)
-            ax.axvline(np.percentile(burn_proximity, 95), **kwargs)
+            ax.axvline(np.median(burn[j]), **kwargs)
+            ax.axvline(np.percentile(burn[j], 95), **kwargs)
+
+            ax.set_xlim(lim_left, lim_right)
+
+            ax.yaxis.set_visible(False)
+            if j != len(feature_names) - 1:
+                ax.xaxis.set_ticklabels([])
 
             ax.yaxis.label.set_visible(False)
             ax.tick_params(labelsize=8)
 
-            ax.text(0.85, 0.75, name.upper(), transform=ax.transAxes, fontsize=8)
+            ax.text(
+                0.90, 0.75, feature_names[j].upper(), transform=ax.transAxes, fontsize=8
+            )
 
             if j == 0:
                 ax.set_title(region.get("name").upper(), fontsize=8)
