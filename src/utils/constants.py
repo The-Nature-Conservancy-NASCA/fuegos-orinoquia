@@ -57,3 +57,5 @@ ACCESSIBILITY_FEATURES = [
     {"name": "roads", "path": "data/shp/accessibility/roads.shp"},
     {"name": "settlements", "path": "data/shp/accessibility/settlements.shp"}
 ]
+
+DISTANCE_FACTOR = 0.5
