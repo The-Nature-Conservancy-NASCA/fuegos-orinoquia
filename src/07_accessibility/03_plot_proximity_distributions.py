@@ -16,7 +16,8 @@ from src.utils.constants import (
     REGIONS,
     ACCESSIBILITY_FEATURES,
     NODATA_VALUE,
-    DISTANCE_FACTOR
+    DISTANCE_FACTOR,
+    DICTIONARY
 )
 
 if __name__ == "__main__":
@@ -30,10 +31,37 @@ if __name__ == "__main__":
     fig = plt.figure(figsize=(11.69, 10.33))
     outer = gridspec.GridSpec(2, 2, wspace=0.2, hspace=0.2)
 
+    lims = [
+        [
+            None,
+            None,
+            (-2, 80),
+            (-2, 40)
+        ],
+        [
+            None,
+            None,
+            None,
+            (-2, 20)
+        ],
+        [
+            None,
+            None,
+            None,
+            (-2, 20)
+        ],
+        [
+            None,
+            None,
+            None,
+            (-2, 10)
+        ],
+    ]
+
     for i, region in enumerate(REGIONS):
 
         inner = gridspec.GridSpecFromSubplotSpec(
-            4, 1, subplot_spec=outer[i], wspace=0.1, hspace=0.1
+            4, 1, subplot_spec=outer[i], wspace=0.1, hspace=0.325
         )
 
         fn = f"data/nc/MODIS/MCD64A1/{region.get('name')}/MCD64A1_500m.nc"
@@ -50,7 +78,9 @@ if __name__ == "__main__":
 
         for name in feature_names:
 
-            proximity_fn = f"data/tif/proximity/{region.get('name')}/{name}_proximity.tif"
+            proximity_fn = (
+                f"data/tif/proximity/{region.get('name')}/{name}_proximity.tif"
+            )
 
             ds = gdal.Open(proximity_fn)
             arr = ds.ReadAsArray()
@@ -91,21 +121,29 @@ if __name__ == "__main__":
             ax.axvline(np.median(burn[j]), **kwargs)
             ax.axvline(np.percentile(burn[j], 95), **kwargs)
 
-            ax.set_xlim(lim_left, lim_right)
+            # ax.set_xlim(lim_left, lim_right)
+
+            lim = lims[i][j]
+            if lim:
+                ax.set_xlim(lim)
 
             ax.yaxis.set_visible(False)
-            if j != len(feature_names) - 1:
-                ax.xaxis.set_ticklabels([])
+            # if j != len(feature_names) - 1:
+            #     ax.xaxis.set_ticklabels([])
 
             ax.yaxis.label.set_visible(False)
             ax.tick_params(labelsize=8)
 
             ax.text(
-                0.875, 0.75, feature_names[j].upper(), transform=ax.transAxes, fontsize=8
+                0.875,
+                0.75,
+                DICTIONARY[feature_names[j]].upper(),
+                transform=ax.transAxes,
+                fontsize=8
             )
 
             if j == 0:
-                ax.set_title(region.get("name").upper(), fontsize=8)
+                ax.set_title(DICTIONARY[region.get("name")].upper(), fontsize=8)
 
             fig.add_subplot(ax)
 
