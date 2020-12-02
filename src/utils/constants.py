@@ -59,3 +59,37 @@ ACCESSIBILITY_FEATURES = [
 ]
 
 DISTANCE_FACTOR = 0.5
+
+DICTIONARY = {
+    "popc": "cpob",
+    "rivers": "rios",
+    "roads": "vias",
+    "comb": "comb",
+    "orinoquia": "orinoquia",
+    "flooded": "inundables",
+    "highland": "altillanura",
+    "dissected": "distectadas"
+}
+
+RECLASSIFY_MAP = {
+    1: 0,
+    2: 1,
+    3: 2,
+    4: 3,
+    5: 4,
+    6: 0,
+    7: 0,
+    8: 0,
+    9: 0,
+    10: 0,
+    11: 2,
+    12: 1,
+    13: 0
+}
+
+LANDCOVER_MAP = {
+    1: "Forest",
+    2: "Cropland",
+    3: "Savanna",
+    4: "Grassland"
+}

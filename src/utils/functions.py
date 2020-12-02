@@ -128,6 +128,31 @@ def download_http_file(url: str, save_to: str = None) -> str:
         raise Exception(f"Error while downloading task. {err}")
 
 
+def reclassify(arr: np.ndarray, value_map: dict) -> np.ndarray:
+    """
+    Reclassifies an array by mapping one or more values to a specific new value.
+    Parameters
+    ----------
+    arr:        2D array to reclassify
+    value_map:  dictionary with old_value:new_value pairs.
+    Returns
+    -------
+    Reclassified 2D array
+    Notes
+    -----
+    Old values that are not specified in value_map remain the same in the new
+    array. In order to avoid overwriting reclassified values, a boolean mask is
+    created from the original array for each set of old values rather than from
+    the new array. Thus, a copy of the original array is necessary.
+    """
+    new_arr = arr.copy()
+    for old_value, new_value in value_map.items():
+        mask = (arr == old_value)
+        new_arr = np.where(mask, new_value, new_arr)
+
+    return new_arr
+
+
 def unzip_file(src: str, dst: str) -> None:
     """
     Unzips zip files.
