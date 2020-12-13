@@ -8,9 +8,11 @@ import os
 import zipfile
 from typing import Union
 
+import geopandas as gpd
 import numpy as np
 import requests
 from osgeo import gdal
+from shapely.geometry import Polygon
 
 
 def array_to_raster(
@@ -52,8 +54,10 @@ def array_to_raster(
     # Create empty raster.
     driver = gdal.GetDriverByName(driver)
     if not driver:
-        raise Exception("Driver name is not valid. Check "
-                        "https://gdal.org/drivers/raster/index.html for valid names.")
+        raise Exception(
+            "Driver name is not valid. Check "
+            "https://gdal.org/drivers/raster/index.html for valid names."
+        )
     out_ds = driver.Create(fn, cols, rows, bands, gdtype, options)
 
     # Set projection and geotransform.
@@ -62,7 +66,7 @@ def array_to_raster(
 
     # Write data to each band and NoData value if specified.
     for i in range(bands):
-        band = out_ds.GetRasterBand(i+1)
+        band = out_ds.GetRasterBand(i + 1)
         if bands > 1:
             band.WriteArray(arr[i])
         else:
@@ -72,6 +76,50 @@ def array_to_raster(
         band.FlushCache()
 
     return out_ds
+
+
+def create_grid(
+    xmin: float,
+    ymin: float,
+    xmax: float,
+    ymax: float,
+    resolution: float,
+    crs: str = "epsg:4326"
+) -> gpd.GeoDataFrame:
+    """
+
+    Parameters
+    ----------
+    xmin
+    ymin
+    xmax
+    ymax
+    resolution
+    crs
+
+    Returns
+    -------
+
+    """
+    height = np.ceil((ymax - ymin) / resolution).astype(np.int)
+    width = np.ceil((xmax - xmin) / resolution).astype(np.int)
+    x_coords = xmin + np.arange(width) * resolution
+    y_coords = ymax - np.arange(height) * resolution
+
+    geometries = []
+    for x in x_coords:
+        for y in y_coords:
+            geom = Polygon(
+                [
+                    (x, y),
+                    (x + resolution, y),
+                    (x + resolution, y + resolution),
+                    (x, y + resolution),
+                ]
+            )
+            geometries.append(geom)
+
+    return gpd.GeoDataFrame(geometry=geometries, crs=crs)
 
 
 def download_http_file(url: str, save_to: str = None) -> str:
@@ -147,7 +195,7 @@ def reclassify(arr: np.ndarray, value_map: dict) -> np.ndarray:
     """
     new_arr = arr.copy()
     for old_value, new_value in value_map.items():
-        mask = (arr == old_value)
+        mask = arr == old_value
         new_arr = np.where(mask, new_value, new_arr)
 
     return new_arr
@@ -168,8 +216,8 @@ def unzip_file(src: str, dst: str) -> None:
     """
     ext = os.path.splitext(src)[1]
 
-    if ext == '.zip':
-        with zipfile.ZipFile(src, 'r') as zip_ref:
+    if ext == ".zip":
+        with zipfile.ZipFile(src, "r") as zip_ref:
             zip_ref.extractall(dst)
     else:
         raise NotImplementedError
