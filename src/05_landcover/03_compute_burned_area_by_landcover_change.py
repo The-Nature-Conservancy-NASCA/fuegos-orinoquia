@@ -81,6 +81,3 @@ if __name__ == "__main__":
                 df["landcover_change"] = pd.DataFrame(values)["mean"]
 
                 df.to_excel(writer, sheet_name=f"{start}_{end}", index=False)
-
-
-
