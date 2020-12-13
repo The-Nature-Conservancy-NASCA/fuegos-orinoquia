@@ -48,12 +48,11 @@ if __name__ == "__main__":
         save_to = os.path.join(output_folder, "burned_area_by_landcover_change.xlsx")
         with pd.ExcelWriter(save_to) as writer:
 
-            for period in LANDCOVER_PERIODS:
+            for start, end in LANDCOVER_PERIODS:
 
-                start, end = period
                 df = pd.DataFrame()
 
-                burn_mask = (burn_da.sel(time=slice(*period)) > 0).any(axis=0).values
+                burn_mask = (burn_da.sel(time=slice(start, end)) > 0).any(axis=0).values
                 values = zonal_stats(
                     boxes, burn_mask, affine=burn_da.rio.transform(), stats=["sum"]
                 )
