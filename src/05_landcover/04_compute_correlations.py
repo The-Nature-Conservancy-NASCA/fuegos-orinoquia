@@ -29,6 +29,3 @@ if __name__ == "__main__":
         output_folder = f"results/csv/{region_name}"
         save_to = os.path.join(output_folder, "burned_area_landcover_change_corr.csv")
         df.to_csv(save_to, index=False)
-        print(region_name)
-        print(correlations)
-        print("\n")
