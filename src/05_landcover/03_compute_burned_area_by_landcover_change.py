@@ -24,6 +24,9 @@ from src.utils.constants import (
 from src.utils.functions import create_grid
 
 
+print(RANDOM_SEED)
+
+
 if __name__ == "__main__":
 
     # Project's root
@@ -39,7 +42,6 @@ if __name__ == "__main__":
         grid = create_grid(*region_mask.bounds.loc[0], GRID_RESOLUTION, region_mask.crs)
         grid = gpd.clip(grid, region_mask)
         grid = grid[grid.area >= GRID_AREA_THRESHOLD * GRID_RESOLUTION ** 2]
-        boxes = grid.sample(frac=SAMPLING_PROPORTION, random_state=RANDOM_SEED)
 
         burn_fn = f"data/nc/MODIS/MCD64A1/{region_name}/MCD64A1_500m.nc"
         burn_da = xr.open_dataset(burn_fn, mask_and_scale=False)["Burn_Date"]
@@ -50,13 +52,17 @@ if __name__ == "__main__":
 
             for start, end in LANDCOVER_PERIODS:
 
-                df = pd.DataFrame()
+                temp_grid = grid.copy()
 
-                burn_mask = (burn_da.sel(time=slice(start, end)) > 0).any(axis=0).values
+                burn_subset = burn_da.sel(time=slice(start, end))
+                burn_mask = (burn_subset > 0).any(axis=0).values.astype(np.uint8)
+                nodata_mask = (burn_subset == burn_subset.rio.nodata).all(axis=0).values
+                burn_mask = np.where(nodata_mask, 255, burn_mask)
+
                 values = zonal_stats(
-                    boxes, burn_mask, affine=burn_da.rio.transform(), stats=["sum"]
+                    temp_grid, burn_mask, nodata=255, affine=burn_da.rio.transform(), stats=["sum"]
                 )
-                df["burned_area"] = pd.DataFrame(values)["sum"] * AREA_FACTOR
+                temp_grid["burned_area"] = pd.DataFrame(values)["sum"] * AREA_FACTOR
 
                 end_fn = os.path.join(landcover_folder, f"landcover_{end}.tif")
                 end_ds = rasterio.open(end_fn)
@@ -75,8 +81,15 @@ if __name__ == "__main__":
                 diff = np.where(nodata_mask, 255, diff)
 
                 values = zonal_stats(
-                    boxes, diff[0], nodata=255, affine=transform, stats=["mean"]
+                    temp_grid, diff[0], nodata=255, affine=transform, stats=["mean"]
                 )
-                df["landcover_change"] = pd.DataFrame(values)["mean"]
+                temp_grid["landcover_change"] = pd.DataFrame(values)["mean"]
+
+                ba_mask = (temp_grid["burned_area"] > 0) & (temp_grid["burned_area"].notna())
+                lc_mask = (temp_grid["landcover_change"] > 0) & (temp_grid["landcover_change"].notna())
+                temp_grid = temp_grid[ba_mask & lc_mask]
+
+                samples = temp_grid.sample(frac=SAMPLING_PROPORTION, random_state=RANDOM_SEED)
+                df = samples[["burned_area", "landcover_change"]]
 
                 df.to_excel(writer, sheet_name=f"{start}_{end}", index=False)
