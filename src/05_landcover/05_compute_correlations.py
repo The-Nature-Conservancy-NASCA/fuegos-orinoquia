@@ -14,18 +14,21 @@ if __name__ == "__main__":
     # Project's root
     os.chdir("../..")
 
+    correlations = pd.DataFrame(columns=["region", "r", "p_value", "n"])
+
     for region in REGIONS:
 
         region_name = region.get("name")
-        correlations = pd.DataFrame(columns=["period", "r", "p_value"])
+        df = pd.DataFrame()
 
         for start, end in LANDCOVER_PERIODS:
-
             fn = f"results/xlsx/{region_name}/burned_area_by_landcover_change.xlsx"
-            df = pd.read_excel(fn, sheet_name=f"{start}_{end}")
-            r, p_value = pearsonr(df["burned_area"], df["landcover_change"])
-            correlations.loc[len(correlations)] = [f"{start}_{end}", r, p_value]
+            period_df = pd.read_excel(fn, sheet_name=f"{start}_{end}")
+            df = df.append(period_df, ignore_index=True)
 
-        output_folder = f"results/csv/{region_name}"
-        save_to = os.path.join(output_folder, "burned_area_landcover_change_corr.csv")
-        df.to_csv(save_to, index=False)
+        r, p_value = pearsonr(df["burned_area"], df["landcover_change"])
+        correlations.loc[len(correlations)] = [region_name, r, p_value, len(df)]
+
+    output_folder = f"results/csv"
+    save_to = os.path.join(output_folder, "burned_area_landcover_change_corr.csv")
+    correlations.to_csv(save_to, index=False)
