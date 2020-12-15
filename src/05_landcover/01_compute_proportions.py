@@ -44,8 +44,6 @@ if __name__ == "__main__":
             burn_mask = (da > 0).any(axis=0)
             burn_sum = (da > 0).sum(axis=0).values
 
-            nyears = (int(period[1]) - int(period[0])) + 1
-
             for value, name in LANDCOVER_MAP.items():
                 landcover_mask = (landcover_arr == value)
                 mask = (landcover_mask & burn_mask)
