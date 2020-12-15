@@ -47,24 +47,22 @@ if __name__ == "__main__":
             da = burn_da.sel(time=slice(*period))
             burn_mask = (da > 0).any(axis=0)
             burn_sum = (da > 0).sum(axis=0).values
+            burn_yearly_mean = (da > 0).resample(time="Y").sum().mean(axis=0).values
 
-            nyears = np.diff(da.time.dt.year[[0, -1]])
-
-            proportions = []
-            return_intervals = []
+            nyears = (int(period[1]) - int(period[0])) + 1
 
             for value, name in LANDCOVER_MAP.items():
 
                 landcover_mask = (landcover_arr == value)
                 landcover_pixels = landcover_mask.sum()
                 mask = (landcover_mask & burn_mask)
-                burned_pixels = np.repeat(landcover_arr[mask], burn_sum[mask]).size
-                landcover_burn_sum = burn_sum[mask]
+                burned_pixels = burn_yearly_mean[mask].sum()
+                landcover_burn_mean = burn_yearly_mean[mask]
 
                 proportion = burned_pixels / landcover_pixels
                 df_proportions.loc[len(df_proportions)] = [year, name, proportion]
 
-                fri = np.mean((nyears + 1) / landcover_burn_sum)
+                fri = np.mean((nyears + 1) / landcover_burn_mean)
                 df_intervals.loc[len(df_intervals)] = [year, name, fri]
 
         output_folder = f"results/csv/{region_name}"

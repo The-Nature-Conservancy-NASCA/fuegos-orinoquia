@@ -96,19 +96,14 @@ LANDCOVER_MAP = {
 }
 
 LANDCOVER_COLORS = {
-    "Forest": "#2e7d32",
-    "Cropland": "#ef6c00",
-    "Savanna": "#ffb300",
-    "Grassland": "#cddc39",
+    "Forest": "#01665e",
+    "Cropland": "#dfc27d",
+    "Savanna": "#f6e8c3",
+    "Grassland": "#35978f",
     "Other": "#455a64"
 }
 
-LANDCOVER_PADDINGS = [
-    ("2001", "2003"),
-    ("2004", "2006"),
-    ("2009", "2011"),
-    ("2015", "2017")
-]
+LANDCOVER_PADDING = 2
 
 LANDCOVER_PERIODS = [
     ("2000", "2005"),
@@ -121,5 +116,5 @@ SANKEY_ALPHA = 0.3
 MCD64A1_RESOLUTION = 0.004166666883983575
 GRID_RESOLUTION = MCD64A1_RESOLUTION * 2 * 16
 GRID_AREA_THRESHOLD = 0.8
-SAMPLING_PROPORTION = 0.3
+SAMPLING_PROPORTION = 0.25
 RANDOM_SEED = 42
