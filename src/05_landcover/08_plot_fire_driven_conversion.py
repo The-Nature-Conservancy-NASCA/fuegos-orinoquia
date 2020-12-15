@@ -52,43 +52,45 @@ if __name__ == "__main__":
             hex_color = LANDCOVER_COLORS.get(row["from_landcover"])
             rgb_color = ImageColor.getrgb(hex_color) + (SANKEY_ALPHA,)
             color_string = "rgba" + str(rgb_color)
-
             links.loc[len(links)] = [source, target, value, color_string]
 
-fig = go.Figure(
-    data=[
-        go.Sankey(
-            node=dict(
-                pad=10,
-                thickness=10,
-                line=dict(color="black", width=0.5),
-                label=nodes["label"],
-                color=nodes["color"],
-            ),
-            link=dict(
-                source=links["source"],
-                target=links["target"],
-                value=links["value"],
-                color=links["color"]
-            ),
+        fig = go.Figure(
+            data=[
+                go.Sankey(
+                    node=dict(
+                        pad=10,
+                        thickness=10,
+                        line=dict(color="black", width=0.5),
+                        label=nodes["label"],
+                        color=nodes["color"],
+                    ),
+                    link=dict(
+                        source=links["source"],
+                        target=links["target"],
+                        value=links["value"],
+                        color=links["color"],
+                    ),
+                )
+            ]
         )
-    ]
-)
 
-fig.update_layout(
-    annotations=[
-        dict(
-            x=0,
-            y=1,
-            text=years[0],
-            showarrow=False
-        ),
-        dict(
-            x=0.75,
-            y=0.25,
-            text='4',
-            showarrow=False
+        fig.add_annotation(
+            x=0.125, y=0.85, text="-".join(LANDCOVER_PERIODS[0]), showarrow=False
         )
-    ])
+        fig.add_annotation(
+            x=0.5, y=0.85, text="-".join(LANDCOVER_PERIODS[1]), showarrow=False
+        )
+        fig.add_annotation(
+            x=0.875, y=0.85, text="-".join(LANDCOVER_PERIODS[2]), showarrow=False,
+        )
 
-fig.write_image("test.pdf")
+        fig.update_layout(
+            font_size=10,
+            margin=go.layout.Margin(l=25, r=25, b=25, t=25)
+        )
+
+        output_folder = f"figures/{region_name}"
+        if not os.path.exists(output_folder):
+            os.makedirs(output_folder)
+        save_to = os.path.join(output_folder, "fire_driven_landcover_conversion.pdf")
+        fig.write_image(save_to)
