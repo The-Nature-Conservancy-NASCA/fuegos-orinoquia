@@ -24,15 +24,12 @@ if __name__ == "__main__":
 
     for region in REGIONS:
 
-        df_proportions = pd.DataFrame(columns=["year", "landcover", "proportion"])
-        df_intervals = pd.DataFrame(columns=["year", "landcover", "interval"])
-
         region_name = region.get('name')
-
         burn_fn = f"data/nc/MODIS/MCD64A1/{region_name}/MCD64A1_500m.nc"
         burn_da = xr.open_dataset(burn_fn, mask_and_scale=False)["Burn_Date"]
-
         landcover_folder = f"data/tif/landcover/{region_name}"
+
+        df = pd.DataFrame(columns=["year", "landcover", "proportion"])
 
         for year in np.unique(LANDCOVER_PERIODS):
 
@@ -47,26 +44,16 @@ if __name__ == "__main__":
             da = burn_da.sel(time=slice(*period))
             burn_mask = (da > 0).any(axis=0)
             burn_sum = (da > 0).sum(axis=0).values
-            burn_yearly_mean = (da > 0).resample(time="Y").sum().mean(axis=0).values
 
             nyears = (int(period[1]) - int(period[0])) + 1
 
             for value, name in LANDCOVER_MAP.items():
-
                 landcover_mask = (landcover_arr == value)
-                landcover_pixels = landcover_mask.sum()
                 mask = (landcover_mask & burn_mask)
-                burned_pixels = burn_yearly_mean[mask].sum()
-                landcover_burn_mean = burn_yearly_mean[mask]
-
-                proportion = burned_pixels / landcover_pixels
-                df_proportions.loc[len(df_proportions)] = [year, name, proportion]
-
-                fri = np.mean((nyears + 1) / landcover_burn_mean)
-                df_intervals.loc[len(df_intervals)] = [year, name, fri]
+                burned_pixels = burn_sum[mask].sum()
+                proportion = burned_pixels / burn_sum.sum()
+                df.loc[len(df)] = [year, name, proportion]
 
         output_folder = f"results/csv/{region_name}"
-        save_to_proportions = os.path.join(output_folder, "proportions_by_landcover.csv")
-        save_to_intervals = os.path.join(output_folder, "intervals_by_landcover.csv")
-        df_proportions.to_csv(save_to_proportions, index=False)
-        df_intervals.to_csv(save_to_intervals, index=False)
+        save_to = os.path.join(output_folder, "proportions_by_landcover.csv")
+        df.to_csv(save_to, index=False)
