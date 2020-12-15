@@ -24,9 +24,6 @@ from src.utils.constants import (
 from src.utils.functions import create_grid
 
 
-print(RANDOM_SEED)
-
-
 if __name__ == "__main__":
 
     # Project's root
