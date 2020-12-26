@@ -72,27 +72,29 @@ DICTIONARY = {
 }
 
 RECLASSIFY_MAP = {
-    1: 5,
+    0: 255,
+    1: 0,
     2: 1,
     3: 2,
-    4: 3,
-    5: 4,
-    6: 5,
-    7: 5,
-    8: 5,
-    9: 5,
-    10: 5,
-    11: 2,
+    4: 4,
+    5: 5,
+    6: 0,
+    7: 0,
+    8: 0,
+    9: 0,
+    10: 0,
+    11: 3,
     12: 1,
-    13: 0
+    13: 255
 }
 
 LANDCOVER_MAP = {
+    0: "Other",
     1: "Forest",
-    2: "Cropland",
-    3: "Savanna",
-    4: "Grassland",
-    5: "Other"
+    2: "Annual cropland",
+    3: "Perennial cropland",
+    4: "Savanna",
+    5: "Grassland"
 }
 
 LANDCOVER_COLORS = {

@@ -29,10 +29,11 @@ if __name__ == "__main__":
 
         # Create temp raster with the reclassified values
         driver = gdal.GetDriverByName("MEM")
-        temp = driver.Create("temp", ds.RasterXSize, ds.RasterYSize, 1, band.DataType)
+        temp = driver.Create("temp", ds.RasterXSize, ds.RasterYSize, 1, gdal.GDT_Byte)
         temp.SetProjection(ds.GetProjection())
         temp.SetGeoTransform(ds.GetGeoTransform())
         temp_band = temp.GetRasterBand(1)
+        temp_band.SetNoDataValue(255)
         temp_band.WriteArray(reclassed_arr)
         temp_band.FlushCache()
 
@@ -54,8 +55,7 @@ if __name__ == "__main__":
                 yRes=abs(ds.rio.resolution()[1]),
                 creationOptions=["COMPRESS=LZW"],
                 resampleAlg="mode",
-                srcNodata=0,
-                dstNodata=0,
+                dstNodata=255,
                 outputType=gdal.GDT_Byte,
                 cutlineDSName=region["path"]
             )
