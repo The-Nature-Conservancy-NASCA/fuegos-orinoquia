@@ -88,11 +88,6 @@ if __name__ == "__main__":
             )
             temp_grid["rainfall"] = pd.DataFrame(values)["mean"]
 
-            # samples = temp_grid.sample(
-            #     frac=SAMPLING_PROPORTION / len(years), random_state=RANDOM_SEED
-            # )
-            # samples = samples[["burned_area", "rainfall"]]
-            # samples["year"] = year
             year_df = temp_grid.copy()[["burned_area", "rainfall"]]
             year_df["year"] = year
             df = df.append(year_df, ignore_index=True)
