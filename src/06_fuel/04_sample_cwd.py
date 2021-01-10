@@ -64,7 +64,7 @@ if __name__ == "__main__":
             temp_grid["burned_area"] = pd.DataFrame(values)["sum"] * AREA_FACTOR
 
             season_cwd_da = cwd_da.sel(time=slice(f"{year}-01-01", f"{year}-03-01"))
-            season_cwd_mean = season_cwd_da.mean(axis=0).values
+            season_cwd_mean = season_cwd_da.sum(axis=0).values
             nodata_mask = (season_cwd_da == cwd_da.rio.nodata).any(axis=0)
             season_cwd_mean = np.where(nodata_mask, -999, season_cwd_mean)
 
@@ -77,11 +77,6 @@ if __name__ == "__main__":
             )
             temp_grid["cwd"] = pd.DataFrame(values)["mean"]
 
-            # samples = temp_grid.sample(
-            #     frac=SAMPLING_PROPORTION / len(years), random_state=RANDOM_SEED
-            # )
-            # samples = samples[["burned_area", "cwd"]]
-            # samples["year"] = year
             year_df = temp_grid.copy()[["burned_area", "cwd"]]
             year_df["year"] = year
             df = df.append(year_df, ignore_index=True)
