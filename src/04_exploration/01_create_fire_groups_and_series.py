@@ -22,12 +22,14 @@ if __name__ == "__main__":
 
     for region in REGIONS:
 
-        output_folder = f"results/xlsx/{region['name']}"
+        region_name = region.get("name")
+
+        output_folder = f"results/xlsx/{region_name}"
         if not os.path.exists(output_folder):
             os.makedirs(output_folder)
 
         window_ds = xr.open_dataset(
-            f"data/nc/MODIS/MCD64A1/MCD64A1_500m_{region['name']}.nc",
+            f"data/nc/MODIS/MCD64A1/{region_name}/MCD64A1_500m.nc",
             mask_and_scale=False,
         )
 
