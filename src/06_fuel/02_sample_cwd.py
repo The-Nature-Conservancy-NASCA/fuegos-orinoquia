@@ -77,12 +77,14 @@ if __name__ == "__main__":
             )
             temp_grid["cwd"] = pd.DataFrame(values)["mean"]
 
-            samples = temp_grid.sample(
-                frac=SAMPLING_PROPORTION / len(years), random_state=RANDOM_SEED
-            )
-            samples = samples[["burned_area", "cwd"]]
-            samples["year"] = year
-            df = df.append(samples, ignore_index=True)
+            # samples = temp_grid.sample(
+            #     frac=SAMPLING_PROPORTION / len(years), random_state=RANDOM_SEED
+            # )
+            # samples = samples[["burned_area", "cwd"]]
+            # samples["year"] = year
+            year_df = temp_grid.copy()[["burned_area", "cwd"]]
+            year_df["year"] = year
+            df = df.append(year_df, ignore_index=True)
 
         output_folder = f"results/csv/{region_name}"
         save_to = os.path.join(output_folder, "burned_area_and_cwd_samples.csv")
