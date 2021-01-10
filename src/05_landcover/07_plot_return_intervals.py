@@ -25,9 +25,10 @@ if __name__ == "__main__":
 
         df = pd.read_csv(f"results/csv/{region_name}/return_intervals_by_landcover.csv")
         df = df.loc[df["landcover"] != "Other"]
+        df = df[df["landcover"] != "Perennial cropland"]
 
         if region_name == "highland":
-            idx = df.query("year == '2000' and landcover == 'Cropland'").index
+            idx = df.query("year == '2000' and landcover == 'Annual cropland'").index
             df = df.drop(idx)
 
         sns.barplot(
