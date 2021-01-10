@@ -6,10 +6,8 @@ import os
 import geopandas as gpd
 import numpy as np
 import pandas as pd
-import rasterio
 import rioxarray
 import xarray as xr
-from rasterio.mask import mask
 from rasterstats import zonal_stats
 
 from src.utils.constants import (

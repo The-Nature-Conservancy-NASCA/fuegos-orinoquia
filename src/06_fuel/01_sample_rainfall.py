@@ -9,7 +9,6 @@ import pandas as pd
 import rasterio
 import rioxarray
 import xarray as xr
-from rasterio.mask import mask
 from rasterstats import zonal_stats
 
 from src.utils.constants import (
