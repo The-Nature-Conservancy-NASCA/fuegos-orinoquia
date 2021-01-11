@@ -38,13 +38,9 @@ if __name__ == "__main__":
 
             # ---------- Temporal (time series) correlations ----------
             fire_series_fn = f"results/xlsx/{region_name}/fire_series.xlsx"
-            fire_series = pd.read_excel(
-                fire_series_fn, sheet_name="Monthly"
-            )
+            fire_series = pd.read_excel(fire_series_fn, sheet_name="Monthly")
             cwd_series_fn = f"results/xlsx/{region_name}/cwd_series.xlsx"
-            cwd_series = pd.read_excel(
-                cwd_series_fn, sheet_name="Monthly"
-            )
+            cwd_series = pd.read_excel(cwd_series_fn, sheet_name="Monthly")
             series = pd.concat([fire_series["area"], cwd_series["cwd"]], axis=1)
             series.index = cwd_series.time
             series = series[series.index.month.isin([1, 2, 3])]
