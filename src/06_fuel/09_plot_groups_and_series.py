@@ -92,7 +92,7 @@ if __name__ == "__main__":
         axs[0][1].yaxis.set_major_formatter(ticker.FormatStrFormatter("%.0e"))
         axs[0][1].set_ylabel("Burned area (ha)", fontsize=8)
         axs[1][1].set_ylabel("Precipitation (mm)", fontsize=8)
-        axs[2][1].set_ylabel("Climatic Water Deficit (mm)", fontsize=8)
+        axs[2][1].set_ylabel("CWD (mm)", fontsize=8)
 
         output_folder = f"figures/{region_name}"
         if not os.path.exists(output_folder):
