@@ -11,9 +11,11 @@ dependencies:
   - numpy
   - openpyxl
   - pandas
+  - plotly
   - pymannkendall
   - pyproj
   - rasterio
+  - rasterstats
   - requests
   - rioxarray
   - scikit-image
