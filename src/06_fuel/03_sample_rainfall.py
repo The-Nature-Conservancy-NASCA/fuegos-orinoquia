@@ -64,7 +64,7 @@ if __name__ == "__main__":
             )
             temp_grid["burned_area"] = pd.DataFrame(values)["sum"] * AREA_FACTOR
 
-            preceding_period = slice(f"{year-2}-11-01", f"{year-1}-11-01")
+            preceding_period = slice(f"{year-2}-12-01", f"{year-1}-11-01")
             preceding_rainfall_da = rainfall_da.sel(time=preceding_period)
             preceding_rainfall_sum = preceding_rainfall_da.sum(axis=0).values
             nodata_mask = (preceding_rainfall_da == rainfall_da.rio.nodata).any(axis=0)
