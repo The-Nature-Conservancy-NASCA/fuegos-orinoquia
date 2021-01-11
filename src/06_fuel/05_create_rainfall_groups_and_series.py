@@ -26,7 +26,6 @@ if __name__ == "__main__":
 
         rainfall_fn = f"data/nc/CHC/CHIRPS/{region_name}/chirps_v2_5km.nc"
         rainfall_da = xr.open_dataset(rainfall_fn, mask_and_scale=True)["precip"]
-        # rainfall_da = rainfall_da.sel(time=slice("2001", "2019"))
 
         output_folder = f"results/xlsx/{region_name}"
         if not os.path.exists(output_folder):
